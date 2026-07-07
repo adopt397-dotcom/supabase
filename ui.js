@@ -1,6 +1,6 @@
 // /member/ui.js
 import { login } from './api.js';
-import { saveSession, isLoggedIn, getSession } from './auth.js';
+import { saveSession, isLoggedIn } from './auth.js';
 
 export function renderLoginOverlay() {
   // 이미 로그인되어 있으면 오버레이 없이 바로 시작
@@ -18,8 +18,8 @@ export function renderLoginOverlay() {
     <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;justify-content:center;align-items:center;">
       <div style="background:#fff;padding:40px;border-radius:16px;max-width:400px;width:90%;text-align:center;">
         <h2 style="margin-bottom:20px;">🔐 SAT 로그인</h2>
-        <input id="loginEmail" type="email" placeholder="이메일" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
-        <input id="loginPin" type="password" placeholder="PIN (4자리)" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+        <input id="loginEmail" type="email" placeholder="이메일을 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+        <input id="loginPin" type="password" placeholder="PIN (4자리)를 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
         <div id="loginError" style="color:red;font-size:14px;margin-bottom:12px;display:none;"></div>
         <button id="loginBtn" style="width:100%;padding:14px;background:#f5a623;color:#fff;border:none;border-radius:8px;font-size:18px;font-weight:700;cursor:pointer;">로그인</button>
       </div>
