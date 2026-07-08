@@ -74,92 +74,91 @@
     }
 
     // 블록 0600: 로그인
-    document.getElementById('testLoginBtn').addEventListener('click', async function() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const pin = document.getElementById('loginPin').value.trim();
-      showResult('loginResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'login', email, pin })
-        });
-        const data = await response.json();
-        showResult('loginResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('loginResult', '❌ Error: ' + err.message, false);
-      }
+document.getElementById('testLoginBtn').addEventListener('click', async function() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  showResult('loginResult', '⏳ Processing...', false);
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'login', email, pin: password })
     });
+    const data = await response.json();
+    showResult('loginResult', JSON.stringify(data, null, 2), data.success);
+  } catch(err) {
+    showResult('loginResult', '❌ Error: ' + err.message, false);
+  }
+});
 
-    // 블록 0700: 회원가입
-    document.getElementById('testSignupBtn').addEventListener('click', async function() {
-      const email = document.getElementById('signupEmail').value.trim();
-      const name = document.getElementById('signupName').value.trim();
-      const pin = document.getElementById('signupPin').value.trim();
-      const pinConfirm = document.getElementById('signupPinConfirm').value.trim();
-      if (pin !== pinConfirm) {
-        showResult('signupResult', '❌ PINs do not match.', false);
-        return;
-      }
-      if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-        showResult('signupResult', '❌ PIN must be 4 digits.', false);
-        return;
-      }
-      showResult('signupResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'signup', email, pin, name })
-        });
-        const data = await response.json();
-        showResult('signupResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('signupResult', '❌ Error: ' + err.message, false);
-      }
+// 블록 0700: 회원가입
+document.getElementById('testSignupBtn').addEventListener('click', async function() {
+  const email = document.getElementById('signupEmail').value.trim();
+  const name = document.getElementById('signupName').value.trim();
+  const password = document.getElementById('signupPassword').value.trim();
+  const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
+  if (password !== passwordConfirm) {
+    showResult('signupResult', '❌ Passwords do not match.', false);
+    return;
+  }
+  if (password.length < 4) {
+    showResult('signupResult', '❌ Password must be at least 4 characters.', false);
+    return;
+  }
+  showResult('signupResult', '⏳ Processing...', false);
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'signup', email, pin: password, name })
     });
+    const data = await response.json();
+    showResult('signupResult', JSON.stringify(data, null, 2), data.success);
+  } catch(err) {
+    showResult('signupResult', '❌ Error: ' + err.message, false);
+  }
+});
 
-    // 블록 0800: 상태확인
-    document.getElementById('testStatusBtn').addEventListener('click', async function() {
-      showResult('statusResult', '⏳ Checking...', false);
-      try {
-        const response = await fetch(GAS_URL);
-        const text = await response.text();
-        showResult('statusResult', '✅ GAS Response:\n' + text, true);
-      } catch(err) {
-        showResult('statusResult', '❌ Error: ' + err.message, false);
-      }
-    });
+// 블록 0800: 상태확인 (변경 없음)
+document.getElementById('testStatusBtn').addEventListener('click', async function() {
+  showResult('statusResult', '⏳ Checking...', false);
+  try {
+    const response = await fetch(GAS_URL);
+    const text = await response.text();
+    showResult('statusResult', '✅ GAS Response:\n' + text, true);
+  } catch(err) {
+    showResult('statusResult', '❌ Error: ' + err.message, false);
+  }
+});
 
-    // 블록 0900: PIN 변경
-    document.getElementById('testChangePinBtn').addEventListener('click', async function() {
-      const email = document.getElementById('changeEmail').value.trim();
-      const oldPin = document.getElementById('changeOldPin').value.trim();
-      const newPin = document.getElementById('changeNewPin').value.trim();
-      
-      if (!email || !oldPin || !newPin) {
-        showResult('changePinResult', '❌ Please fill in all fields.', false);
-        return;
-      }
-      if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-        showResult('changePinResult', '❌ New PIN must be 4 digits.', false);
-        return;
-      }
-      
-      showResult('changePinResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'changePin', email, oldPin, newPin })
-        });
-        const data = await response.json();
-        showResult('changePinResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('changePinResult', '❌ Error: ' + err.message, false);
-      }
+// 블록 0900: Password 변경 (수정)
+document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
+  const email = document.getElementById('changeEmail').value.trim();
+  const oldPassword = document.getElementById('changeOldPassword').value.trim();
+  const newPassword = document.getElementById('changeNewPassword').value.trim();
+  
+  if (!email || !oldPassword || !newPassword) {
+    showResult('changePasswordResult', '❌ Please fill in all fields.', false);
+    return;
+  }
+  if (newPassword.length < 4) {
+    showResult('changePasswordResult', '❌ New password must be at least 4 characters.', false);
+    return;
+  }
+  
+  showResult('changePasswordResult', '⏳ Processing...', false);
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'changePin', email, oldPin: oldPassword, newPin: newPassword })
     });
-  </script>
+    const data = await response.json();
+    showResult('changePasswordResult', JSON.stringify(data, null, 2), data.success);
+  } catch(err) {
+    showResult('changePasswordResult', '❌ Error: ' + err.message, false);
+  }
+});
   <!-- 블록 0400-0900: JavaScript 끝 -->
 </body>
 </html>
