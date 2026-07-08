@@ -133,40 +133,41 @@
       }
     });
 
-    // 블록 0900: Password 변경 (수정 완료)
-// 블록 0900: Password 변경
-document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
-  const email = document.getElementById('changeEmail').value.trim();
-  const oldPassword = document.getElementById('changeOldPassword').value.trim();
-  const newPassword = document.getElementById('changeNewPassword').value.trim();
-  const newPasswordConfirm = document.getElementById('changeNewPasswordConfirm').value.trim();
-  
-  if (!email || !oldPassword || !newPassword || !newPasswordConfirm) {
-    showResult('changePasswordResult', '❌ Please fill in all fields.', false);
-    return;
-  }
-  if (newPassword !== newPasswordConfirm) {
-    showResult('changePasswordResult', '❌ New passwords do not match.', false);
-    return;
-  }
-  if (newPassword.length < 4) {
-    showResult('changePasswordResult', '❌ New password must be at least 4 characters.', false);
-    return;
-  }
-  
-  showResult('changePasswordResult', '⏳ Processing...', false);
-  try {
-    const response = await fetch(GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'changePassword', email, oldPassword, newPassword })
+    // 블록 0900: Password 변경
+    document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
+      const email = document.getElementById('changeEmail').value.trim();
+      const oldPassword = document.getElementById('changeOldPassword').value.trim();
+      const newPassword = document.getElementById('changeNewPassword').value.trim();
+      const newPasswordConfirm = document.getElementById('changeNewPasswordConfirm').value.trim();
+      
+      if (!email || !oldPassword || !newPassword || !newPasswordConfirm) {
+        showResult('changePasswordResult', '❌ Please fill in all fields.', false);
+        return;
+      }
+      if (newPassword !== newPasswordConfirm) {
+        showResult('changePasswordResult', '❌ New passwords do not match.', false);
+        return;
+      }
+      if (newPassword.length < 4) {
+        showResult('changePasswordResult', '❌ New password must be at least 4 characters.', false);
+        return;
+      }
+      
+      showResult('changePasswordResult', '⏳ Processing...', false);
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: 'changePassword', email, oldPassword, newPassword })
+        });
+        const data = await response.json();
+        showResult('changePasswordResult', JSON.stringify(data, null, 2), data.success);
+      } catch(err) {
+        showResult('changePasswordResult', '❌ Error: ' + err.message, false);
+      }
     });
-    const data = await response.json();
-    showResult('changePasswordResult', JSON.stringify(data, null, 2), data.success);
-  } catch(err) {
-    showResult('changePasswordResult', '❌ Error: ' + err.message, false);
-  }
-});
+  </script>
   <!-- 블록 0400-0900: JavaScript 끝 -->
+
 </body>
 </html>
