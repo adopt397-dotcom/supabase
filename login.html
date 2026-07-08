@@ -24,43 +24,42 @@
   <!-- 블록 0200: 헤더 끝 -->
 
   <!-- 블록 0300: 테스트 섹션들 시작 -->
-  <!-- 0310: 로그인 -->
-  <div class="test-section">
-    <h3>🔐 TEST 1: Login</h3>
-    <input id="loginEmail" type="email" placeholder="Email" value="student@gmail.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="loginPin" type="password" placeholder="PIN" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <button id="testLoginBtn">Login</button>
-    <div id="loginResult" class="result">Click Login to test.</div>
-  </div>
+<!-- 0310: 로그인 -->
+<div class="test-section">
+  <h3>🔐 TEST 1: Login</h3>
+  <input id="loginEmail" type="email" placeholder="Email" value="student@gmail.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="loginPassword" type="password" placeholder="Password (min 4 characters)" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <button id="testLoginBtn">Login</button>
+  <div id="loginResult" class="result">Click Login to test.</div>
+</div>
 
-  <!-- 0320: 회원가입 -->
-  <div class="test-section">
-    <h3>📝 TEST 2: Signup</h3>
-    <input id="signupEmail" type="email" placeholder="Email" value="testuser@test.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="signupName" type="text" placeholder="Name" value="Test User" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="signupPin" type="password" placeholder="PIN (4 digits)" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="signupPinConfirm" type="password" placeholder="Confirm PIN" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <button id="testSignupBtn">Sign Up</button>
-    <div id="signupResult" class="result">Click Sign Up to test.</div>
-  </div>
+<!-- 0320: 회원가입 -->
+<div class="test-section">
+  <h3>📝 TEST 2: Signup</h3>
+  <input id="signupEmail" type="email" placeholder="Email" value="testuser@test.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="signupName" type="text" placeholder="Name" value="Test User" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="signupPassword" type="password" placeholder="Password (min 4 characters)" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="signupPasswordConfirm" type="password" placeholder="Confirm Password" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <button id="testSignupBtn">Sign Up</button>
+  <div id="signupResult" class="result">Click Sign Up to test.</div>
+</div>
 
-  <!-- 0330: 상태확인 -->
-  <div class="test-section">
-    <h3>📊 TEST 3: Status</h3>
-    <button id="testStatusBtn">Check Status</button>
-    <div id="statusResult" class="result">Click Check Status.</div>
-  </div>
+<!-- 0330: 상태확인 -->
+<div class="test-section">
+  <h3>📊 TEST 3: Status</h3>
+  <button id="testStatusBtn">Check Status</button>
+  <div id="statusResult" class="result">Click Check Status.</div>
+</div>
 
-  <!-- 0340: PIN 변경 -->
-  <div class="test-section">
-    <h3>🔑 TEST 4: Change PIN</h3>
-    <input id="changeEmail" type="email" placeholder="Email" value="student@gmail.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="changeOldPin" type="password" placeholder="Current PIN" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="changeNewPin" type="password" placeholder="New PIN (4 digits)" value="5678" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <button id="testChangePinBtn">Change PIN</button>
-    <div id="changePinResult" class="result">Click Change PIN to test.</div>
-  </div>
-  <!-- 블록 0300: 테스트 섹션들 끝 -->
+<!-- 0340: Password 변경 -->
+<div class="test-section">
+  <h3>🔑 TEST 4: Change Password</h3>
+  <input id="changeEmail" type="email" placeholder="Email" value="student@gmail.com" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="changeOldPassword" type="password" placeholder="Current Password" value="1234" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <input id="changeNewPassword" type="password" placeholder="New Password (min 4 characters)" value="5678" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
+  <button id="testChangePasswordBtn">Change Password</button>
+  <div id="changePasswordResult" class="result">Click Change Password to test.</div>
+</div>
 
   <!-- 블록 0400-0900: JavaScript 시작 -->
   <script>
