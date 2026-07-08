@@ -80,3 +80,12 @@ async function handleLogin() {
     errorEl.style.display = 'block';
   }
 }
+
+// SAT 엔진 실행 후 로그아웃 버튼 추가
+const originalInit = window.initialize;
+window.initialize = function() {
+  if (typeof originalInit === 'function') {
+    originalInit();
+  }
+  setTimeout(window.addLogoutButton, 500);
+};
