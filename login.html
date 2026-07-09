@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Login</title>
+    <title>GongBoo.org - Member Login</title>
 
 <!-- ====================================================================== -->
 <!-- HTML-0100: CSS 스타일 (대분류) -->
@@ -184,7 +184,7 @@
 <!-- HTML-0300: 탭 메뉴 (대분류) -->
 <!-- ====================================================================== -->
 <div class="tabs">
-    <button class="tab-btn active" data-tab="loginTab">Login</button>
+    <button class="tab-btn active" data-tab="loginTab">Sign In</button>
     <button class="tab-btn" data-tab="signupTab">Sign Up</button>
     <button class="tab-btn" data-tab="changeTab">Change Password</button>
 </div>
@@ -237,7 +237,7 @@
     <button class="btn-primary btn-signup" id="testSignupBtn">Sign Up</button>
     <div id="signupResult" class="result-box">Waiting for sign up.</div>
     <div class="toggle-text">
-        Already have an account? <button class="link-btn" id="gotoLoginFromSignup">Login</button>
+        Already have an account? <button class="link-btn" id="gotoLoginFromSignup">Sign In</button>
     </div>
 </div>
 
@@ -273,7 +273,7 @@
     <button class="btn-primary" id="testChangePasswordBtn">Change Password</button>
     <div id="changePasswordResult" class="result-box">Waiting for password change.</div>
     <div class="toggle-text">
-        <button class="link-btn" id="gotoLoginFromChange">Back to Login</button>
+        <button class="link-btn" id="gotoLoginFromChange">Back to Sign In</button>
     </div>
 </div>
 
@@ -283,24 +283,21 @@
 <!-- HTML-0400: JavaScript (대분류) -->
 <!-- ====================================================================== -->
 
-<!-- config.js, api.js, auth.js 로드 -->
-<script src="config.js"></script>
-<script src="api.js"></script>
-<script src="auth.js"></script>
-
+<!-- ============================== -->
+<!-- HTML-0410: 결과 표시 (소분류) -->
+<!-- ============================== -->
 <script>
-// ==============================
-// HTML-0410: 결과 표시 (소분류)
-// ==============================
 function showResult(elementId, message, isSuccess) {
     const el = document.getElementById(elementId);
     el.textContent = message;
     el.className = 'result-box' + (isSuccess ? ' success' : ' error');
 }
+</script>
 
-// ==============================
-// HTML-0420: 비밀번호 토글 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0420: 비밀번호 토글 (소분류) -->
+<!-- ============================== -->
+<script>
 function togglePasswordVisibility(inputId, toggleId) {
     const input = document.getElementById(inputId);
     const toggle = document.getElementById(toggleId);
@@ -316,10 +313,12 @@ function togglePasswordVisibility(inputId, toggleId) {
         });
     }
 }
+</script>
 
-// ==============================
-// HTML-0430: 탭 전환 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0430: 탭 전환 (소분류) -->
+<!-- ============================== -->
+<script>
 function initTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
     const contents = {
@@ -353,10 +352,12 @@ function initTabs() {
         });
     }
 }
+</script>
 
-// ==============================
-// HTML-0440: 로그인 처리 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0440: 로그인 처리 (소분류) -->
+<!-- ============================== -->
+<script>
 async function handleLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
@@ -375,9 +376,10 @@ async function handleLogin() {
         if (data.success) {
             window.saveSession(email, data.name || 'User');
             showResult('loginResult', '✅ Welcome, ' + (data.name || 'User') + '!', true);
-            setTimeout(() => {
-                window.location.href = '/tilda.cc.html';
-            }, 1000);
+            btn.disabled = false;
+            btn.textContent = 'Login';
+            // 로그인 성공 후 이동할 페이지 (나중에 설정)
+            // window.location.href = '/tilda.cc.html';
         } else {
             showResult('loginResult', '❌ ' + (data.message || 'Login failed.'), false);
             btn.disabled = false;
@@ -389,10 +391,12 @@ async function handleLogin() {
         btn.textContent = 'Login';
     }
 }
+</script>
 
-// ==============================
-// HTML-0450: 회원가입 처리 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0450: 회원가입 처리 (소분류) -->
+<!-- ============================== -->
+<script>
 async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
     const name = document.getElementById('signupName').value.trim();
@@ -442,10 +446,12 @@ async function handleSignup() {
         btn.textContent = 'Sign Up';
     }
 }
+</script>
 
-// ==============================
-// HTML-0460: 비밀번호 변경 처리 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0460: 비밀번호 변경 처리 (소분류) -->
+<!-- ============================== -->
+<script>
 async function handleChangePassword() {
     const email = document.getElementById('changeEmail').value.trim();
     const oldPassword = document.getElementById('changeOldPassword').value.trim();
@@ -491,37 +497,53 @@ async function handleChangePassword() {
         btn.textContent = 'Change Password';
     }
 }
+</script>
 
-// ==============================
-// HTML-0470: 이벤트 바인딩 및 초기화 (소분류)
-// ==============================
+<!-- ============================== -->
+<!-- HTML-0470: 이벤트 바인딩 및 초기화 (소분류) -->
+<!-- ============================== -->
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    initTabs();
-
-    togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
-    togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
-    togglePasswordVisibility('signupPasswordConfirm', 'toggleSignupPasswordConfirm');
-    togglePasswordVisibility('changeOldPassword', 'toggleChangeOldPassword');
-    togglePasswordVisibility('changeNewPassword', 'toggleChangeNewPassword');
-    togglePasswordVisibility('changeNewPasswordConfirm', 'toggleChangeNewPasswordConfirm');
-
-    document.getElementById('testLoginBtn').addEventListener('click', handleLogin);
-    document.getElementById('loginPassword').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleLogin();
-    });
-    document.getElementById('loginEmail').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleLogin();
+    // config.js, api.js, auth.js 로드 (GitHub Pages 경로)
+    const scripts = [
+        'member/config.js',
+        'member/api.js',
+        'member/auth.js'
+    ];
+    scripts.forEach(src => {
+        const script = document.createElement('script');
+        script.src = src;
+        document.head.appendChild(script);
     });
 
-    document.getElementById('testSignupBtn').addEventListener('click', handleSignup);
-    document.getElementById('signupPasswordConfirm').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleSignup();
-    });
+    // 잠시 후 초기화 (스크립트 로드 대기)
+    setTimeout(function() {
+        initTabs();
+        togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
+        togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
+        togglePasswordVisibility('signupPasswordConfirm', 'toggleSignupPasswordConfirm');
+        togglePasswordVisibility('changeOldPassword', 'toggleChangeOldPassword');
+        togglePasswordVisibility('changeNewPassword', 'toggleChangeNewPassword');
+        togglePasswordVisibility('changeNewPasswordConfirm', 'toggleChangeNewPasswordConfirm');
 
-    document.getElementById('testChangePasswordBtn').addEventListener('click', handleChangePassword);
-    document.getElementById('changeNewPasswordConfirm').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleChangePassword();
-    });
+        document.getElementById('testLoginBtn').addEventListener('click', handleLogin);
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('loginEmail').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        document.getElementById('testSignupBtn').addEventListener('click', handleSignup);
+        document.getElementById('signupPasswordConfirm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleSignup();
+        });
+
+        document.getElementById('testChangePasswordBtn').addEventListener('click', handleChangePassword);
+        document.getElementById('changeNewPasswordConfirm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleChangePassword();
+        });
+    }, 500);
 });
 
 console.log('✅ login.html loaded.');
