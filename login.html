@@ -690,27 +690,27 @@
     <button class="tab-btn" data-tab="changeTab">Change Password</button>
 </div>
 
-        <!-- ====================================================================== -->
-        <!-- HTML-0310: 로그인 폼 (중분류) -->
-        <!-- ====================================================================== -->
-        <!-- 🔍 찾기: HTML-0310 -->
-        <!-- 📝 설명: 이메일 + PIN 로그인 폼 -->
-        <!-- ====================================================================== -->
-        <div id="loginTab" class="tab-content">
-            <div class="form-group">
-                <label>E-mail</label>
-                <input id="loginEmail" type="email" placeholder="example@email.com">
-            </div>
-            <div class="form-group">
-                <label>PIN (4 digits)</label>
-                <div class="password-wrapper">
-                    <input id="loginPin" type="password" placeholder="Enter your PIN" maxlength="4">
-                    <span class="toggle-password" id="toggleLoginPin">👁️</span>
-                </div>
-            </div>
-            <button class="btn-primary" id="testLoginBtn">Login</button>
-            <div id="loginResult" class="result-box">Waiting for login.</div>
+       <!-- ====================================================================== -->
+<!-- HTML-0310: 로그인 폼 (중분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: HTML-0310 -->
+<!-- 📝 설명: 이메일 + Password 로그인 폼 -->
+<!-- ====================================================================== -->
+<div id="loginTab" class="tab-content">
+    <div class="form-group">
+        <label>E-mail</label>
+        <input id="loginEmail" type="email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <div class="password-wrapper">
+            <input id="loginPassword" type="password" placeholder="Enter your password">
+            <span class="toggle-password" id="toggleLoginPassword">👁️</span>
         </div>
+    </div>
+    <button class="btn-primary" id="testLoginBtn">Login</button>
+    <div id="loginResult" class="result-box">Waiting for login.</div>
+</div>
 
         <!-- ====================================================================== -->
         <!-- HTML-0320: 회원가입 폼 (중분류) -->
@@ -866,17 +866,17 @@
         }
     </script>
 
-  // ==============================
+// ==============================
 // HTML-0440: 로그인 처리 (handleLogin) - 소분류
 // ==============================
 <script>
 async function handleLogin() {
     const email = document.getElementById('loginEmail').value.trim();
-    const pin = document.getElementById('loginPin').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
     const btn = document.getElementById('testLoginBtn');
 
-    if (!email || !pin) {
-        showResult('loginResult', 'Please enter both email and PIN.', false);
+    if (!email || !password) {
+        showResult('loginResult', 'Please enter both email and password.', false);
         return;
     }
 
@@ -884,7 +884,7 @@ async function handleLogin() {
     btn.textContent = '⏳ Processing...';
 
     try {
-        const data = await window.login(email, pin);
+        const data = await window.login(email, password);
         if (data.success) {
             window.saveSession(email, data.name || 'User');
             showResult('loginResult', '✅ Welcome, ' + (data.name || 'User') + '!', true);
