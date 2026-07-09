@@ -464,48 +464,84 @@
     </script>
 
     <!-- ============================== -->
-    <!-- JS-0460: 회원가입 처리 (소분류) -->
-    <!-- ============================== -->
-    <script>
-        document.getElementById('testSignupBtn').addEventListener('click', async function() {
-            const email = document.getElementById('signupEmail').value.trim();
-            const name = document.getElementById('signupName').value.trim();
-            const phone = document.getElementById('signupPhone').value.trim();
-            const password = document.getElementById('signupPassword').value.trim();
-            const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
+   // ==============================
+// JS-0460: 회원가입 처리 (소분류)
+// ==============================
+document.getElementById('testSignupBtn').addEventListener('click', async function() {
+    const email = document.getElementById('signupEmail').value.trim();
+    const name = document.getElementById('signupName').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
+    const btn = document.getElementById('testSignupBtn');
 
-            if (!email || !name || !phone || !password || !passwordConfirm) {
-                showResult('signupResult', '❌ Please fill in all fields.', false);
-                return;
-            }
-            if (password !== passwordConfirm) {
-                showResult('signupResult', '❌ Passwords do not match.', false);
-                return;
-            }
-            if (password.length < 4) {
-                showResult('signupResult', '❌ Password must be at least 4 characters.', false);
-                return;
-            }
-            if (!/^[0-9]{10,11}$/.test(phone)) {
-                showResult('signupResult', '❌ Phone number must be 10-11 digits.', false);
-                return;
-            }
+    if (!email || !name || !phone || !password || !passwordConfirm) {
+        showResult('signupResult', '❌ Please fill in all fields.', false);
+        return;
+    }
+    if (password !== passwordConfirm) {
+        showResult('signupResult', '❌ Passwords do not match.', false);
+        return;
+    }
+    if (password.length < 4) {
+        showResult('signupResult', '❌ Password must be at least 4 characters.', false);
+        return;
+    }
+    if (!/^[0-9]{10,11}$/.test(phone)) {
+        showResult('signupResult', '❌ Phone number must be 10-11 digits.', false);
+        return;
+    }
 
-            showResult('signupResult', '⏳ Processing sign up...', false);
+    btn.disabled = true;
+    btn.textContent = '⏳ Processing...';
+    showResult('signupResult', '⏳ Processing sign up...', false);
 
-            try {
-                const response = await fetch(GAS_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: 'signup', email, pin: password, name, pn: phone })
-                });
-                const data = await response.json();
-                showResult('signupResult', data.success ? '✅ ' + data.message : '❌ ' + data.message, data.success);
-            } catch (err) {
-                showResult('signupResult', '❌ Server connection error: ' + err.message, false);
-            }
+    try {
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: 'signup', email, pin: password, name, pn: phone })
         });
-    </script>
+        const data = await response.json();
+
+        if (data.success) {
+            showResult('signupResult', '✅ ' + data.message, true);
+            btn.disabled = false;
+            btn.textContent = 'Sign Up';
+
+            // 1️⃣ 폼 초기화
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupPhone').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupPasswordConfirm').value = '';
+
+            // 2️⃣ 로그인 탭으로 강제 전환
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="loginTab"]').classList.add('active');
+            document.getElementById('loginTab').classList.remove('form-hidden');
+            document.getElementById('signupTab').classList.add('form-hidden');
+            document.getElementById('changeTab').classList.add('form-hidden');
+
+            // 3️⃣ 로그인 폼에 이메일 자동 입력
+            document.getElementById('loginEmail').value = email;
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginPassword').focus();
+
+            // 4️⃣ 로그인 결과 메시지 표시
+            showResult('loginResult', '✅ Account created! Please login.', true);
+
+        } else {
+            showResult('signupResult', '❌ ' + data.message, false);
+            btn.disabled = false;
+            btn.textContent = 'Sign Up';
+        }
+    } catch (err) {
+        showResult('signupResult', '❌ Server connection error: ' + err.message, false);
+        btn.disabled = false;
+        btn.textContent = 'Sign Up';
+    }
+});
 
     <!-- ============================== -->
     <!-- JS-0470: 상태확인 (소분류) -->
