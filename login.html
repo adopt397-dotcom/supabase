@@ -3,230 +3,456 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAT Login Test</title>
+  <title>회원 로그인</title>
   <!-- 블록 0100: 스타일 시작 -->
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-    .test-section { border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
-    .test-section h3 { margin-top: 0; }
-    button { padding: 10px 20px; background: #f5a623; border: none; border-radius: 6px; color: #fff; font-weight: 700; cursor: pointer; }
-    button:hover { background: #e0941a; }
-    .result { background: #f8f9fa; padding: 15px; border-radius: 6px; margin-top: 10px; white-space: pre-wrap; font-size: 14px; }
-    .success { color: #27ae60; }
-    .error { color: #e74c3c; }
-    .password-wrapper { position: relative; width: 100%; }
-    .password-wrapper input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; padding-right: 40px; }
-    .toggle-password { position: absolute; right: 10px; top: 25%; transform: translateY(-25%); cursor: pointer; font-size: 20px; user-select: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 420px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #1a1a2e;
+      background: #f0f2f5;
+    }
+    .tab-btn:hover { background: #f0f2f5; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border 0.2s;
+      background: #fafafa;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #f5a623;
+      background: #fff;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper input {
+      padding-right: 44px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+      color: #aaa;
+      transition: color 0.2s;
+    }
+    .toggle-password:hover { color: #555; }
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: #f5a623;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 6px;
+    }
+    .btn-primary:hover { background: #e0941a; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .result-box {
+      background: #f8f9fa;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 16px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 50px;
+      border: 1px solid #eee;
+      color: #333;
+    }
+    .result-box.success { border-color: #27ae60; background: #eafaf1; color: #1e7e34; }
+    .result-box.error { border-color: #e74c3c; background: #fdedec; color: #b03a2e; }
+    .form-hidden { display: none; }
+    .link-btn {
+      background: none;
+      border: none;
+      color: #f5a623;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+    }
+    .link-btn:hover { text-decoration: underline; }
+    .toggle-text {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: 18px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+    .status-badge.a { background: #d4edda; color: #155724; }
+    .status-badge.p { background: #fff3cd; color: #856404; }
+    .status-badge.e { background: #f8d7da; color: #721c24; }
+    .status-badge.n { background: #e2e3e5; color: #383d41; }
+    @media (max-width: 480px) {
+      .container { padding: 24px 18px; }
+    }
   </style>
   <!-- 블록 0100: 스타일 끝 -->
 </head>
 <body>
-  <!-- 블록 0200: 헤더 시작 -->
-  <h1>SAT Login System - Test Page</h1>
-  <p>GitHub Pages에서 직접 테스트하여 모든 기능을 검증합니다.</p>
-  <!-- 블록 0200: 헤더 끝 -->
 
-  <!-- 블록 0300: 테스트 섹션들 시작 -->
-  <!-- 0310: 로그인 -->
-  <div class="test-section">
-    <h3>🔐 TEST 1: Login</h3>
-    <input id="loginEmail" type="email" placeholder="E-mail" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <div class="password-wrapper">
-      <input id="loginPassword" type="password" placeholder="Enter your password">
-      <span class="toggle-password" id="toggleLoginPassword">👁️</span>
-    </div>
-    <button id="testLoginBtn">Login</button>
-    <div id="loginResult" class="result">Click Login to test.</div>
+<div class="container">
+  <h1>🔐 회원 서비스</h1>
+  <p class="subtitle">로그인 · 가입 · 비밀번호 변경</p>
+
+  <!-- 블록 0200: 탭 메뉴 -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="loginTab">로그인</button>
+    <button class="tab-btn" data-tab="signupTab">회원가입</button>
+    <button class="tab-btn" data-tab="changeTab">비밀번호 변경</button>
   </div>
 
-  <!-- 0320: 회원가입 -->
-  <div class="test-section">
-    <h3>📝 TEST 2: Signup</h3>
-    <input id="signupEmail" type="email" placeholder="E-mail" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="signupName" type="text" placeholder="Name" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <input id="signupPhone" type="tel" placeholder="Phone number (10-11 digits)" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <div class="password-wrapper">
-      <input id="signupPassword" type="password" placeholder="Create password (min 4 characters)">
-      <span class="toggle-password" id="toggleSignupPassword">👁️</span>
+  <!-- ===== 블록 0310: 로그인 폼 ===== -->
+  <div id="loginTab" class="tab-content">
+    <div class="form-group">
+      <label>E-mail</label>
+      <input id="loginEmail" type="email" placeholder="example@email.com">
     </div>
-    <div class="password-wrapper">
-      <input id="signupPasswordConfirm" type="password" placeholder="Confirm password">
-      <span class="toggle-password" id="toggleSignupPasswordConfirm">👁️</span>
+    <div class="form-group">
+      <label>비밀번호</label>
+      <div class="password-wrapper">
+        <input id="loginPassword" type="password" placeholder="비밀번호 입력">
+        <span class="toggle-password" id="toggleLoginPassword">👁️</span>
+      </div>
     </div>
-    <button id="testSignupBtn">Sign Up</button>
-    <div id="signupResult" class="result">Click Sign Up to test.</div>
+    <button class="btn-primary" id="testLoginBtn">로그인</button>
+    <div id="loginResult" class="result-box">로그인을 기다리고 있습니다.</div>
   </div>
 
-  <!-- 0330: 상태확인 -->
-  <div class="test-section">
-    <h3>📊 TEST 3: Status</h3>
+  <!-- ===== 블록 0320: 회원가입 폼 ===== -->
+  <div id="signupTab" class="tab-content form-hidden">
+    <div class="form-group">
+      <label>E-mail</label>
+      <input id="signupEmail" type="email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+      <label>이름</label>
+      <input id="signupName" type="text" placeholder="홍길동">
+    </div>
+    <div class="form-group">
+      <label>전화번호 (10~11자리 숫자)</label>
+      <input id="signupPhone" type="tel" placeholder="01012345678">
+    </div>
+    <div class="form-group">
+      <label>비밀번호 (4자리 이상)</label>
+      <div class="password-wrapper">
+        <input id="signupPassword" type="password" placeholder="비밀번호 입력">
+        <span class="toggle-password" id="toggleSignupPassword">👁️</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>비밀번호 확인</label>
+      <div class="password-wrapper">
+        <input id="signupPasswordConfirm" type="password" placeholder="비밀번호 재입력">
+        <span class="toggle-password" id="toggleSignupPasswordConfirm">👁️</span>
+      </div>
+    </div>
+    <button class="btn-primary" id="testSignupBtn">회원가입</button>
+    <div id="signupResult" class="result-box">회원가입을 기다리고 있습니다.</div>
+    <div class="toggle-text">
+      이미 계정이 있으신가요? <button class="link-btn" id="gotoLoginFromSignup">로그인</button>
+    </div>
+  </div>
+
+  <!-- ===== 블록 0340: 비밀번호 변경 폼 ===== -->
+  <div id="changeTab" class="tab-content form-hidden">
+    <div class="form-group">
+      <label>E-mail</label>
+      <input id="changeEmail" type="email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+      <label>현재 비밀번호</label>
+      <div class="password-wrapper">
+        <input id="changeOldPassword" type="password" placeholder="현재 비밀번호">
+        <span class="toggle-password" id="toggleChangeOldPassword">👁️</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>새 비밀번호 (4자리 이상)</label>
+      <div class="password-wrapper">
+        <input id="changeNewPassword" type="password" placeholder="새 비밀번호">
+        <span class="toggle-password" id="toggleChangeNewPassword">👁️</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>새 비밀번호 확인</label>
+      <div class="password-wrapper">
+        <input id="changeNewPasswordConfirm" type="password" placeholder="새 비밀번호 재입력">
+        <span class="toggle-password" id="toggleChangeNewPasswordConfirm">👁️</span>
+      </div>
+    </div>
+    <button class="btn-primary" id="testChangePasswordBtn">비밀번호 변경</button>
+    <div id="changePasswordResult" class="result-box">비밀번호 변경을 기다리고 있습니다.</div>
+    <div class="toggle-text">
+      <button class="link-btn" id="gotoLoginFromChange">로그인으로 돌아가기</button>
+    </div>
+  </div>
+
+  <!-- ===== 블록 0330: 상태 확인 (숨김) ===== -->
+  <div style="display:none;">
     <button id="testStatusBtn">Check Status</button>
-    <div id="statusResult" class="result">Click Check Status.</div>
+    <div id="statusResult" class="result-box">Click Check Status.</div>
   </div>
 
-  <!-- 0340: Password 변경 -->
-  <div class="test-section">
-    <h3>🔑 TEST 4: Change Password</h3>
-    <input id="changeEmail" type="email" placeholder="E-mail" style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;">
-    <div class="password-wrapper">
-      <input id="changeOldPassword" type="password" placeholder="Enter current password">
-      <span class="toggle-password" id="toggleChangeOldPassword">👁️</span>
-    </div>
-    <div class="password-wrapper">
-      <input id="changeNewPassword" type="password" placeholder="Enter new password (min 4 characters)">
-      <span class="toggle-password" id="toggleChangeNewPassword">👁️</span>
-    </div>
-    <div class="password-wrapper">
-      <input id="changeNewPasswordConfirm" type="password" placeholder="Confirm new password">
-      <span class="toggle-password" id="toggleChangeNewPasswordConfirm">👁️</span>
-    </div>
-    <button id="testChangePasswordBtn">Change Password</button>
-    <div id="changePasswordResult" class="result">Click Change Password to test.</div>
-  </div>
-  <!-- 블록 0300: 테스트 섹션들 끝 -->
+</div>
 
-  <!-- 블록 0400-1100: JavaScript 시작 -->
-  <script>
-    // 블록 0400: 설정
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxadHBMhdMmUPgRvq_V-e7J9hnZFKgrkzqN2-MQ1jbqghaQXNAXIod7tH4BNm3R6o5h/exec';
+<!-- ===== 블록 0400-1100: JavaScript ===== -->
+<script>
+  // 블록 0400: 설정
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxadHBMhdMmUPgRvq_V-e7J9hnZFKgrkzqN2-MQ1jbqghaQXNAXIod7tH4BNm3R6o5h/exec';
 
-    // 블록 0500: 공통 함수
-    function showResult(elementId, message, isSuccess) {
-      const el = document.getElementById(elementId);
-      el.textContent = message;
-      el.className = 'result ' + (isSuccess ? 'success' : 'error');
+  // 블록 0500: 공통 함수
+  function showResult(elementId, message, isSuccess) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.className = 'result-box' + (isSuccess ? ' success' : ' error');
+  }
+
+  // 블록 1000: 비밀번호 표시 토글
+  function togglePasswordVisibility(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const toggle = document.getElementById(toggleId);
+    if (input && toggle) {
+      toggle.addEventListener('click', function() {
+        if (input.type === 'password') {
+          input.type = 'text';
+          toggle.textContent = '🙈';
+        } else {
+          input.type = 'password';
+          toggle.textContent = '👁️';
+        }
+      });
+    }
+  }
+
+  // 블록 1100: 탭 전환
+  function initTabs() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = {
+      loginTab: document.getElementById('loginTab'),
+      signupTab: document.getElementById('signupTab'),
+      changeTab: document.getElementById('changeTab')
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        Object.keys(contents).forEach(key => {
+          contents[key].classList.toggle('form-hidden', key !== this.dataset.tab);
+        });
+      });
+    });
+
+    // 링크 버튼
+    document.getElementById('gotoLoginFromSignup').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('[data-tab="loginTab"]').click();
+    });
+    document.getElementById('gotoLoginFromChange').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('[data-tab="loginTab"]').click();
+    });
+  }
+
+  // 블록 0600: 로그인
+  document.getElementById('testLoginBtn').addEventListener('click', async function() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    if (!email || !password) {
+      showResult('loginResult', '❌ E-mail과 비밀번호를 모두 입력해주세요.', false);
+      return;
+    }
+    showResult('loginResult', '⏳ 로그인 중...', false);
+    try {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'login', email, pin: password })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showResult('loginResult', `✅ ${data.name}님, 환영합니다!`, true);
+      } else {
+        showResult('loginResult', `❌ ${data.message}`, false);
+      }
+    } catch(err) {
+      showResult('loginResult', '❌ 서버 연결 오류: ' + err.message, false);
+    }
+  });
+
+  // 블록 0700: 회원가입
+  document.getElementById('testSignupBtn').addEventListener('click', async function() {
+    const email = document.getElementById('signupEmail').value.trim();
+    const name = document.getElementById('signupName').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
+
+    if (!email || !name || !phone || !password || !passwordConfirm) {
+      showResult('signupResult', '❌ 모든 항목을 입력해주세요.', false);
+      return;
+    }
+    if (password !== passwordConfirm) {
+      showResult('signupResult', '❌ 비밀번호가 일치하지 않습니다.', false);
+      return;
+    }
+    if (password.length < 4) {
+      showResult('signupResult', '❌ 비밀번호는 4자리 이상이어야 합니다.', false);
+      return;
+    }
+    if (!/^[0-9]{10,11}$/.test(phone)) {
+      showResult('signupResult', '❌ 전화번호는 10~11자리 숫자여야 합니다.', false);
+      return;
     }
 
-    // 블록 1000: 비밀번호 표시 토글 함수
-    function togglePasswordVisibility(inputId, toggleId) {
-      const input = document.getElementById(inputId);
-      const toggle = document.getElementById(toggleId);
-      if (input && toggle) {
-        toggle.addEventListener('click', function() {
-          if (input.type === 'password') {
-            input.type = 'text';
-            toggle.textContent = '🙈';
-          } else {
-            input.type = 'password';
-            toggle.textContent = '👁️';
-          }
-        });
-      }
+    showResult('signupResult', '⏳ 회원가입 처리 중...', false);
+    try {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'signup', email, pin: password, name, pn: phone })
+      });
+      const data = await response.json();
+      showResult('signupResult', data.success ? '✅ ' + data.message : '❌ ' + data.message, data.success);
+    } catch(err) {
+      showResult('signupResult', '❌ 서버 연결 오류: ' + err.message, false);
+    }
+  });
+
+  // 블록 0800: 상태확인 (숨김, 필요시 사용)
+  document.getElementById('testStatusBtn').addEventListener('click', async function() {
+    showResult('statusResult', '⏳ 확인 중...', false);
+    try {
+      const response = await fetch(GAS_URL);
+      const text = await response.text();
+      showResult('statusResult', '✅ GAS 응답:\n' + text, true);
+    } catch(err) {
+      showResult('statusResult', '❌ 오류: ' + err.message, false);
+    }
+  });
+
+  // 블록 0900: 비밀번호 변경
+  document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
+    const email = document.getElementById('changeEmail').value.trim();
+    const oldPassword = document.getElementById('changeOldPassword').value.trim();
+    const newPassword = document.getElementById('changeNewPassword').value.trim();
+    const newPasswordConfirm = document.getElementById('changeNewPasswordConfirm').value.trim();
+
+    if (!email || !oldPassword || !newPassword || !newPasswordConfirm) {
+      showResult('changePasswordResult', '❌ 모든 항목을 입력해주세요.', false);
+      return;
+    }
+    if (newPassword !== newPasswordConfirm) {
+      showResult('changePasswordResult', '❌ 새 비밀번호가 일치하지 않습니다.', false);
+      return;
+    }
+    if (newPassword.length < 4) {
+      showResult('changePasswordResult', '❌ 새 비밀번호는 4자리 이상이어야 합니다.', false);
+      return;
     }
 
-    // 블록 0600: 로그인
-    document.getElementById('testLoginBtn').addEventListener('click', async function() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      showResult('loginResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'login', email, pin: password })
-        });
-        const data = await response.json();
-        showResult('loginResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('loginResult', '❌ Error: ' + err.message, false);
-      }
-    });
+    showResult('changePasswordResult', '⏳ 변경 처리 중...', false);
+    try {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'changePassword', email, oldPassword, newPassword })
+      });
+      const data = await response.json();
+      showResult('changePasswordResult', data.success ? '✅ ' + data.message : '❌ ' + data.message, data.success);
+    } catch(err) {
+      showResult('changePasswordResult', '❌ 서버 연결 오류: ' + err.message, false);
+    }
+  });
 
-    // 블록 0700: 회원가입
-    document.getElementById('testSignupBtn').addEventListener('click', async function() {
-      const email = document.getElementById('signupEmail').value.trim();
-      const name = document.getElementById('signupName').value.trim();
-      const phone = document.getElementById('signupPhone').value.trim();
-      const password = document.getElementById('signupPassword').value.trim();
-      const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
-      
-      if (password !== passwordConfirm) {
-        showResult('signupResult', '❌ Passwords do not match.', false);
-        return;
-      }
-      if (password.length < 4) {
-        showResult('signupResult', '❌ Password must be at least 4 characters.', false);
-        return;
-      }
-      if (phone === '') {
-        showResult('signupResult', '❌ Phone number is required.', false);
-        return;
-      }
-      if (!/^[0-9]{10,11}$/.test(phone)) {
-        showResult('signupResult', '❌ Phone number must be 10-11 digits.', false);
-        return;
-      }
-      
-      showResult('signupResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'signup', email, pin: password, name, pn: phone })
-        });
-        const data = await response.json();
-        showResult('signupResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('signupResult', '❌ Error: ' + err.message, false);
-      }
-    });
+  // 블록 1100: 초기화
+  window.onload = function() {
+    initTabs();
+    togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
+    togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
+    togglePasswordVisibility('signupPasswordConfirm', 'toggleSignupPasswordConfirm');
+    togglePasswordVisibility('changeOldPassword', 'toggleChangeOldPassword');
+    togglePasswordVisibility('changeNewPassword', 'toggleChangeNewPassword');
+    togglePasswordVisibility('changeNewPasswordConfirm', 'toggleChangeNewPasswordConfirm');
+  };
+</script>
+<!-- ===== 블록 0400-1100: JavaScript 끝 ===== -->
 
-    // 블록 0800: 상태확인
-    document.getElementById('testStatusBtn').addEventListener('click', async function() {
-      showResult('statusResult', '⏳ Checking...', false);
-      try {
-        const response = await fetch(GAS_URL);
-        const text = await response.text();
-        showResult('statusResult', '✅ GAS Response:\n' + text, true);
-      } catch(err) {
-        showResult('statusResult', '❌ Error: ' + err.message, false);
-      }
-    });
-
-    // 블록 0900: Password 변경
-    document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
-      const email = document.getElementById('changeEmail').value.trim();
-      const oldPassword = document.getElementById('changeOldPassword').value.trim();
-      const newPassword = document.getElementById('changeNewPassword').value.trim();
-      const newPasswordConfirm = document.getElementById('changeNewPasswordConfirm').value.trim();
-      
-      if (!email || !oldPassword || !newPassword || !newPasswordConfirm) {
-        showResult('changePasswordResult', '❌ Please fill in all fields.', false);
-        return;
-      }
-      if (newPassword !== newPasswordConfirm) {
-        showResult('changePasswordResult', '❌ New passwords do not match.', false);
-        return;
-      }
-      if (newPassword.length < 4) {
-        showResult('changePasswordResult', '❌ New password must be at least 4 characters.', false);
-        return;
-      }
-      
-      showResult('changePasswordResult', '⏳ Processing...', false);
-      try {
-        const response = await fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'changePassword', email, oldPassword, newPassword })
-        });
-        const data = await response.json();
-        showResult('changePasswordResult', JSON.stringify(data, null, 2), data.success);
-      } catch(err) {
-        showResult('changePasswordResult', '❌ Error: ' + err.message, false);
-      }
-    });
-
-    // 블록 1100: 토글 이벤트 연결
-    document.addEventListener('DOMContentLoaded', function() {
-      togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
-      togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
-      togglePasswordVisibility('signupPasswordConfirm', 'toggleSignupPasswordConfirm');
-      togglePasswordVisibility('changeOldPassword', 'toggleChangeOldPassword');
-      togglePasswordVisibility('changeNewPassword', 'toggleChangeNewPassword');
-      togglePasswordVisibility('changeNewPasswordConfirm', 'toggleChangeNewPasswordConfirm');
-    });
-  </script>
-  <!-- 블록 0400-1100: JavaScript 끝 -->
 </body>
 </html>
