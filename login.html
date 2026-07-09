@@ -1,460 +1,1051 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Member Login</title>
-  <!-- 블록 0100: 스타일 시작 -->
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #F7FAFC;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.container {
-  background: #FFFFFF;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  border: 1px solid #E2E8F0;
-  width: 100%;
-  max-width: 420px;
-}
-h1 {
-  font-size: 28px;
-  font-weight: 800;
-  text-align: center;
-  color: #2D3748;
-  letter-spacing: -0.5px;
-  margin-bottom: 4px;
-}
-.subtitle {
-  text-align: center;
-  color: #718096;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  margin-bottom: 28px;
-}
-.tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 24px;
-  background: #F7FAFC;
-  padding: 4px;
-  border-radius: 10px;
-}
-.tab-btn {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 600;
-  color: #718096;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-.tab-btn.active {
-  background: #F5A623;
-  color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.25);
-}
-.tab-btn:hover:not(.active) { background: #EDF2F7; }
-.form-group { margin-bottom: 16px; }
-.form-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #4A5568;
-  margin-bottom: 5px;
-}
-.form-group input {
-  width: 100%;
-  padding: 12px 14px;
-  background: #F7FAFC;
-  border: 2px solid #E2E8F0;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: all 0.2s;
-  color: #2D3748;
-}
-.form-group input:focus {
-  outline: none;
-  border-color: #F5A623;
-  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.12);
-  background: #FFFFFF;
-}
-.password-wrapper { position: relative; }
-.password-wrapper input { padding-right: 44px; }
-.toggle-password {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
-  color: #A0AEC0;
-  transition: color 0.2s;
-}
-.toggle-password:hover { color: #4A5568; }
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  background: #F5A623;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
-}
-.btn-primary:hover {
-  background: #E0951F;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245, 166, 35, 0.35);
-}
-.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.result-box {
-  background: #F7FAFC;
-  padding: 14px;
-  border-radius: 8px;
-  margin-top: 16px;
-  font-size: 14px;
-  white-space: pre-wrap;
-  word-break: break-all;
-  min-height: 48px;
-  border: 1px solid #E2E8F0;
-  color: #2D3748;
-}
-.result-box.success { border-color: #48BB78; background: #F0FFF4; color: #276749; }
-.result-box.error { border-color: #FC8181; background: #FFF5F5; color: #C53030; }
-.form-hidden { display: none; }
-.link-btn {
-  background: none;
-  border: none;
-  color: #F5A623;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 4px;
-}
-.link-btn:hover { text-decoration: underline; }
-.toggle-text {
-  text-align: center;
-  font-size: 14px;
-  color: #718096;
-  margin-top: 18px;
-}
-@media (max-width: 480px) {
-  .container { padding: 24px 18px; }
-  h1 { font-size: 24px; }
-}
-  </style>
-  <!-- 블록 0100: 스타일 끝 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GongBoo.org - 회원 관리</title>
+
+<!-- ====================================================================== -->
+<!-- CONFIG-0100: GAS API URL 설정 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: CONFIG-0100 -->
+<!-- 📝 설명: 모든 API 호출에 사용되는 GAS URL -->
+<!-- 🛠️ 수정 시: URL 변경 시 이 블록만 수정 -->
+<!-- ====================================================================== -->
+<script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxIymT6beN1izBiBXMR95qT19ykaA1wjcmiqwasghvKJanVfSPpTEu68NcLJJy1QWQC/exec';
+    console.log('✅ CONFIG-0100: GAS_URL loaded.');
+</script>
+
+<!-- ====================================================================== -->
+<!-- API-0100: GAS API 통신 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: API-0100 -->
+<!-- 📝 설명: 로그인/회원가입/PIN 변경 API 호출 함수 -->
+<!-- ====================================================================== -->
+
+<!-- ================================================== -->
+<!-- API-0110: 로그인 (login) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.login = async function(email, pin) {
+        try {
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'login', email, pin })
+            });
+            return await response.json();
+        } catch (e) {
+            console.error('Login API error:', e);
+            return { success: false, message: 'Network error' };
+        }
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- API-0120: 회원가입 (signup) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.signup = async function(email, pin, name) {
+        try {
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'signup', email, pin, name })
+            });
+            return await response.json();
+        } catch (e) {
+            console.error('Signup API error:', e);
+            return { success: false, message: 'Network error' };
+        }
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- API-0130: PIN 변경 (changePin) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.changePin = async function(email, oldPin, newPin) {
+        try {
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'changePin', email, oldPin, newPin })
+            });
+            return await response.json();
+        } catch (e) {
+            console.error('ChangePin API error:', e);
+            return { success: false, message: 'Network error' };
+        }
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- API-0200: API 에러 처리 - 중분류 -->
+<!-- ================================================== -->
+<script>
+    console.log('✅ API-0100: API functions loaded.');
+</script>
+
+<!-- ====================================================================== -->
+<!-- AUTH-0100: 세션 관리 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: AUTH-0100 -->
+<!-- 📝 설명: localStorage 기반 로그인 세션 관리 -->
+<!-- ====================================================================== -->
+
+<!-- ================================================== -->
+<!-- AUTH-0110: 세션 저장 (saveSession) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.saveSession = function(email, name) {
+        sessionStorage.setItem('user', JSON.stringify({
+            email: email,
+            name: name,
+            loggedIn: true
+        }));
+        console.log('✅ AUTH-0110: Session saved for:', email);
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- AUTH-0120: 세션 조회 (getSession) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.getSession = function() {
+        try {
+            const data = sessionStorage.getItem('user');
+            return data ? JSON.parse(data) : null;
+        } catch (e) {
+            console.warn('⚠️ AUTH-0120: Failed to parse session:', e);
+            return null;
+        }
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- AUTH-0130: 로그인 상태 확인 (isLoggedIn) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.isLoggedIn = function() {
+        const session = window.getSession();
+        return session && session.loggedIn === true;
+    };
+</script>
+
+<!-- ================================================== -->
+<!-- AUTH-0200: 로그아웃 (logout) - 중분류 -->
+<!-- ================================================== -->
+<script>
+    window.logout = function() {
+        console.log('🚪 AUTH-0200: Logging out...');
+        sessionStorage.removeItem('user');
+        window.location.reload();
+    };
+</script>
+
+<!-- ====================================================================== -->
+<!-- UI-0100: 로그인 오버레이 및 UI 제어 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: UI-0100 -->
+<!-- 📝 설명: 로그인 오버레이, 폼 전환, 핸들러 함수 -->
+<!-- ====================================================================== -->
+
+<!-- ============================== -->
+<!-- UI-0110: 로그인 오버레이 렌더링 - 중분류 -->
+<!-- ============================== -->
+<script>
+    window.renderLoginOverlay = async function() {
+        if (document.getElementById('loginOverlay')) {
+            return;
+        }
+
+        if (window.isLoggedIn()) {
+            if (typeof window.initialize === 'function') {
+                window.initialize();
+            }
+            return;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'loginOverlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.zIndex = '999999999';
+        overlay.style.background = 'rgba(0,0,0,0.7)';
+        overlay.style.display = 'flex';
+        overlay.style.justifyContent = 'center';
+        overlay.style.alignItems = 'center';
+        overlay.style.pointerEvents = 'auto';
+
+        overlay.innerHTML = `
+            <div style="background:#fff;padding:40px;border-radius:16px;max-width:400px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+                <h2 style="margin-bottom:20px;color:#1a1a2e;">🔐 SAT 로그인</h2>
+                <div id="loginForm">
+                    <input id="loginEmail" type="email" placeholder="이메일을 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="loginPin" type="password" placeholder="PIN (4자리)를 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <div id="loginError" style="color:red;font-size:14px;margin-bottom:12px;display:none;"></div>
+                    <button id="loginBtn" style="width:100%;padding:14px;background:#f5a623;color:#fff;border:none;border-radius:8px;font-size:18px;font-weight:700;cursor:pointer;">로그인</button>
+                </div>
+                <div id="signupForm" style="display:none;">
+                    <input id="signupEmail" type="email" placeholder="이메일을 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="signupName" type="text" placeholder="이름을 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="signupPin" type="password" placeholder="PIN (4자리)를 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="signupPinConfirm" type="password" placeholder="PIN을 다시 입력해주세요" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <div id="signupError" style="color:red;font-size:14px;margin-bottom:12px;display:none;"></div>
+                    <button id="signupBtn" style="width:100%;padding:14px;background:#27ae60;color:#fff;border:none;border-radius:8px;font-size:18px;font-weight:700;cursor:pointer;">회원가입</button>
+                </div>
+                <div style="margin-top:12px;font-size:14px;color:#666;">
+                    <span id="toggleText">계정이 없으신가요? <a href="#" id="toggleLink" style="color:#f5a623;font-weight:600;text-decoration:none;">회원가입</a></span>
+                </div>
+                <div id="changePinForm" style="display:none;margin-top:15px;border-top:1px solid #eee;padding-top:15px;">
+                    <h3 style="font-size:16px;color:#1a1a2e;">🔑 PIN 변경</h3>
+                    <input id="oldPin" type="password" placeholder="현재 PIN" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="newPin" type="password" placeholder="새 PIN (4자리)" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <input id="newPinConfirm" type="password" placeholder="새 PIN 확인" style="width:100%;padding:12px;margin-bottom:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box;">
+                    <div id="changePinError" style="color:red;font-size:14px;margin-bottom:12px;display:none;"></div>
+                    <button id="changePinBtn" style="width:100%;padding:14px;background:#3498db;color:#fff;border:none;border-radius:8px;font-size:18px;font-weight:700;cursor:pointer;">PIN 변경</button>
+                    <button id="changePinCancelBtn" style="width:100%;padding:10px;margin-top:8px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">취소</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        document.getElementById('loginBtn').addEventListener('click', handleLogin);
+        document.getElementById('loginPin').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+        document.getElementById('loginEmail').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        document.getElementById('signupBtn').addEventListener('click', handleSignup);
+        document.getElementById('signupPinConfirm').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSignup();
+        });
+
+        document.getElementById('toggleLink').addEventListener('click', toggleForm);
+
+        document.getElementById('changePinBtn').addEventListener('click', handleChangePin);
+        document.getElementById('changePinCancelBtn').addEventListener('click', () => {
+            document.getElementById('changePinForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('toggleText').style.display = 'block';
+        });
+    };
+</script>
+
+<!-- ============================== -->
+<!-- UI-0120: 로그인 처리 (handleLogin) - 중분류 -->
+<!-- ============================== -->
+<script>
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pin = document.getElementById('loginPin').value.trim();
+        const errorEl = document.getElementById('loginError');
+
+        if (!email || !pin) {
+            errorEl.textContent = '이메일과 PIN을 모두 입력해주세요.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const result = await window.login(email, pin);
+            if (result.success) {
+                window.saveSession(email, result.name);
+                const overlay = document.getElementById('loginOverlay');
+                if (overlay) overlay.remove();
+                if (typeof window.initialize === 'function') {
+                    window.initialize();
+                }
+            } else {
+                errorEl.textContent = result.message || '로그인 실패했습니다.';
+                errorEl.style.display = 'block';
+            }
+        } catch (err) {
+            errorEl.textContent = '서버 연결 오류가 발생했습니다.';
+            errorEl.style.display = 'block';
+        }
+    }
+</script>
+
+<!-- ============================== -->
+<!-- UI-0130: 회원가입 처리 (handleSignup) - 중분류 -->
+<!-- ============================== -->
+<script>
+    async function handleSignup() {
+        const email = document.getElementById('signupEmail').value.trim();
+        const name = document.getElementById('signupName').value.trim();
+        const pin = document.getElementById('signupPin').value.trim();
+        const pinConfirm = document.getElementById('signupPinConfirm').value.trim();
+        const errorEl = document.getElementById('signupError');
+
+        if (!email || !name || !pin || !pinConfirm) {
+            errorEl.textContent = '모든 항목을 입력해주세요.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+            errorEl.textContent = 'PIN은 4자리 숫자여야 합니다.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        if (pin !== pinConfirm) {
+            errorEl.textContent = 'PIN이 일치하지 않습니다.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const result = await window.signup(email, pin, name);
+            if (result.success) {
+                errorEl.style.display = 'none';
+                alert('회원가입이 완료되었습니다. 관리자 승인 후 로그인이 가능합니다.');
+                document.getElementById('signupForm').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('toggleText').style.display = 'block';
+                document.getElementById('loginEmail').value = email;
+                document.getElementById('loginPin').value = '';
+            } else {
+                errorEl.textContent = result.message || '회원가입 실패했습니다.';
+                errorEl.style.display = 'block';
+            }
+        } catch (err) {
+            errorEl.textContent = '서버 연결 오류가 발생했습니다.';
+            errorEl.style.display = 'block';
+        }
+    }
+</script>
+
+<!-- ============================== -->
+<!-- UI-0140: 폼 전환 (toggleForm) - 중분류 -->
+<!-- ============================== -->
+<script>
+    function toggleForm(e) {
+        e.preventDefault();
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const toggleText = document.getElementById('toggleText');
+        const loginError = document.getElementById('loginError');
+        const signupError = document.getElementById('signupError');
+
+        if (loginForm.style.display === 'none') {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            toggleText.innerHTML = '계정이 없으신가요? <a href="#" id="toggleLink" style="color:#f5a623;font-weight:600;text-decoration:none;">회원가입</a>';
+            loginError.style.display = 'none';
+            signupError.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            toggleText.innerHTML = '이미 계정이 있으신가요? <a href="#" id="toggleLink" style="color:#f5a623;font-weight:600;text-decoration:none;">로그인</a>';
+            loginError.style.display = 'none';
+            signupError.style.display = 'none';
+        }
+        document.getElementById('toggleLink').addEventListener('click', toggleForm);
+    }
+</script>
+
+<!-- ============================== -->
+<!-- UI-0150: PIN 변경 처리 (handleChangePin) - 중분류 -->
+<!-- ============================== -->
+<script>
+    async function handleChangePin() {
+        const session = window.getSession();
+        if (!session) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        const oldPin = document.getElementById('oldPin').value.trim();
+        const newPin = document.getElementById('newPin').value.trim();
+        const newPinConfirm = document.getElementById('newPinConfirm').value.trim();
+        const errorEl = document.getElementById('changePinError');
+
+        if (!oldPin || !newPin || !newPinConfirm) {
+            errorEl.textContent = '모든 항목을 입력해주세요.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+            errorEl.textContent = '새 PIN은 4자리 숫자여야 합니다.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        if (newPin !== newPinConfirm) {
+            errorEl.textContent = '새 PIN이 일치하지 않습니다.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const result = await window.changePin(session.email, oldPin, newPin);
+            if (result.success) {
+                errorEl.style.display = 'none';
+                alert('PIN이 변경되었습니다.');
+                document.getElementById('changePinForm').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('signupForm').style.display = 'none';
+                document.getElementById('toggleText').style.display = 'block';
+                window.logout();
+            } else {
+                errorEl.textContent = result.message || 'PIN 변경 실패했습니다.';
+                errorEl.style.display = 'block';
+            }
+        } catch (err) {
+            errorEl.textContent = '서버 연결 오류가 발생했습니다.';
+            errorEl.style.display = 'block';
+        }
+    }
+</script>
+
+<!-- ============================== -->
+<!-- UI-0160: 로그아웃 버튼 추가 (addLogoutButton) - 중분류 -->
+<!-- ============================== -->
+<script>
+    window.addLogoutButton = function() {
+        if (document.getElementById('logoutButton')) return;
+
+        const quizMain = document.getElementById('quizMain');
+        if (!quizMain) return;
+
+        const logoutBtn = document.createElement('button');
+        logoutBtn.id = 'logoutButton';
+        logoutBtn.textContent = '🚪 로그아웃';
+        logoutBtn.style.cssText = `
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            padding: 10px 18px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        `;
+        logoutBtn.onmouseover = function() { this.style.background = '#c0392b'; };
+        logoutBtn.onmouseout = function() { this.style.background = '#e74c3c'; };
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('로그아웃하시겠습니까? 진행 상황은 저장됩니다.')) {
+                window.logout();
+            }
+        });
+
+        document.body.appendChild(logoutBtn);
+    };
+</script>
+
+<!-- ============================== -->
+<!-- UI-0170: initialize 오버라이드 - 중분류 -->
+<!-- ============================== -->
+<script>
+    const originalInit = window.initialize;
+    window.initialize = function() {
+        if (typeof originalInit === 'function') {
+            originalInit();
+        }
+        setTimeout(window.addLogoutButton, 500);
+    };
+    console.log('✅ UI-0100: UI functions loaded.');
+</script>
+
+<!-- ====================================================================== -->
+<!-- HTML-0100: CSS 스타일 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: HTML-0100 -->
+<!-- 📝 설명: 회원 관리 페이지 전체 스타일 -->
+<!-- ====================================================================== -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #F7FAFC;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        background: #FFFFFF;
+        padding: 40px 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        border: 1px solid #E2E8F0;
+        width: 100%;
+        max-width: 420px;
+    }
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        text-align: center;
+        color: #2D3748;
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #718096;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        margin-bottom: 28px;
+    }
+    .tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 24px;
+        background: #F7FAFC;
+        padding: 4px;
+        border-radius: 10px;
+    }
+    .tab-btn {
+        flex: 1;
+        padding: 10px 0;
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        font-weight: 600;
+        color: #718096;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+    .tab-btn.active {
+        background: #F5A623;
+        color: #FFFFFF;
+        box-shadow: 0 2px 8px rgba(245, 166, 35, 0.25);
+    }
+    .tab-btn:hover:not(:active) {
+        background: #EDF2F7;
+    }
+    .form-group {
+        margin-bottom: 16px;
+    }
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4A5568;
+        margin-bottom: 5px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        background: #F7FAFC;
+        border: 2px solid #E2E8F0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.2s;
+        color: #2D3748;
+    }
+    .form-group input:focus {
+        outline: none;
+        border-color: #F5A623;
+        box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.12);
+        background: #FFFFFF;
+    }
+    .password-wrapper {
+        position: relative;
+    }
+    .password-wrapper input {
+        padding-right: 44px;
+    }
+    .toggle-password {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 20px;
+        user-select: none;
+        color: #A0AEC0;
+        transition: color 0.2s;
+    }
+    .toggle-password:hover {
+        color: #4A5568;
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background: #F5A623;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 4px;
+        box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
+        min-height: 52px;
+    }
+    .btn-primary:hover {
+        background: #E0951F;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(245, 166, 35, 0.35);
+    }
+    .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .btn-signup {
+        padding: 16px;
+        font-size: 18px;
+        min-height: 56px;
+    }
+    .result-box {
+        background: #F7FAFC;
+        padding: 14px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+        white-space: pre-wrap;
+        word-break: break-all;
+        min-height: 48px;
+        border: 1px solid #E2E8F0;
+        color: #2D3748;
+    }
+    .result-box.success {
+        border-color: #48BB78;
+        background: #F0FFF4;
+        color: #276749;
+    }
+    .result-box.error {
+        border-color: #FC8181;
+        background: #FFF5F5;
+        color: #C53030;
+    }
+    .form-hidden {
+        display: none;
+    }
+    .link-btn {
+        background: none;
+        border: none;
+        color: #F5A623;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 0 4px;
+    }
+    .link-btn:hover {
+        text-decoration: underline;
+    }
+    .toggle-text {
+        text-align: center;
+        font-size: 14px;
+        color: #718096;
+        margin-top: 18px;
+    }
+    @media (max-width: 480px) {
+        .container {
+            padding: 24px 18px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<!-- ====================================================================== -->
+<!-- HTML-0200: 헤더/로고 (대분류) -->
+<!-- ====================================================================== -->
+<!-- 🔍 찾기: HTML-0200 -->
+<!-- 📝 설명: 페이지 상단 로고 및 서비스명 -->
+<!-- ====================================================================== -->
 </head>
 <body>
+    <div class="container">
+        <h1>GongBoo.org</h1>
+        <p class="subtitle">Member Service</p>
 
-<div class="container">
-  <!-- 블록 0200: 헤더 시작 -->
-  <h1>GongBoo.org</h1>
-  <p class="subtitle">Member Service</p>
-  <!-- 블록 0200: 헤더 끝 -->
+        <!-- ====================================================================== -->
+        <!-- HTML-0300: 탭 메뉴 (대분류) -->
+        <!-- ====================================================================== -->
+        <!-- 🔍 찾기: HTML-0300 -->
+        <!-- 📝 설명: 로그인 / 회원가입 / PIN 변경 탭 -->
+        <!-- ====================================================================== -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="loginTab">Sign In</button>
+            <button class="tab-btn" data-tab="signupTab">Sign Up</button>
+            <button class="tab-btn" data-tab="changeTab">Change PIN</button>
+        </div>
 
-  <!-- 블록 0300: 탭 메뉴 시작 -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="loginTab">Login</button>
-    <button class="tab-btn" data-tab="signupTab">Sign Up</button>
-    <button class="tab-btn" data-tab="changeTab">Change Password</button>
-  </div>
-  <!-- 블록 0300: 탭 메뉴 끝 -->
+        <!-- ====================================================================== -->
+        <!-- HTML-0310: 로그인 폼 (중분류) -->
+        <!-- ====================================================================== -->
+        <!-- 🔍 찾기: HTML-0310 -->
+        <!-- 📝 설명: 이메일 + PIN 로그인 폼 -->
+        <!-- ====================================================================== -->
+        <div id="loginTab" class="tab-content">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input id="loginEmail" type="email" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>PIN (4 digits)</label>
+                <div class="password-wrapper">
+                    <input id="loginPin" type="password" placeholder="Enter your PIN" maxlength="4">
+                    <span class="toggle-password" id="toggleLoginPin">👁️</span>
+                </div>
+            </div>
+            <button class="btn-primary" id="testLoginBtn">Login</button>
+            <div id="loginResult" class="result-box">Waiting for login.</div>
+        </div>
 
-  <!-- ===== 블록 0310: 로그인 폼 ===== -->
-  <div id="loginTab" class="tab-content">
-    <div class="form-group">
-      <label>E-mail</label>
-      <input id="loginEmail" type="email" placeholder="example@email.com">
-    </div>
-    <div class="form-group">
-      <label>Password</label>
-      <div class="password-wrapper">
-        <input id="loginPassword" type="password" placeholder="Enter your password">
-        <span class="toggle-password" id="toggleLoginPassword">👁️</span>
-      </div>
-    </div>
-    <button class="btn-primary" id="testLoginBtn">Login</button>
-    <div id="loginResult" class="result-box">Waiting for login.</div>
-  </div>
+        <!-- ====================================================================== -->
+        <!-- HTML-0320: 회원가입 폼 (중분류) -->
+        <!-- ====================================================================== -->
+        <!-- 🔍 찾기: HTML-0320 -->
+        <!-- 📝 설명: 새 계정 등록 폼 -->
+        <!-- ====================================================================== -->
+        <div id="signupTab" class="tab-content form-hidden">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input id="signupEmail" type="email" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input id="signupName" type="text" placeholder="Your full name">
+            </div>
+            <div class="form-group">
+                <label>PIN (4 digits)</label>
+                <div class="password-wrapper">
+                    <input id="signupPin" type="password" placeholder="Create PIN (4 digits)" maxlength="4">
+                    <span class="toggle-password" id="toggleSignupPin">👁️</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm PIN</label>
+                <div class="password-wrapper">
+                    <input id="signupPinConfirm" type="password" placeholder="Confirm your PIN" maxlength="4">
+                    <span class="toggle-password" id="toggleSignupPinConfirm">👁️</span>
+                </div>
+            </div>
+            <button class="btn-primary btn-signup" id="testSignupBtn">Sign Up</button>
+            <div id="signupResult" class="result-box">Waiting for sign up.</div>
+            <div class="toggle-text">
+                Already have an account? <button class="link-btn" id="gotoLoginFromSignup">Sign In</button>
+            </div>
+        </div>
 
-  <!-- ===== 블록 0320: 회원가입 폼 ===== -->
-  <div id="signupTab" class="tab-content form-hidden">
-    <div class="form-group">
-      <label>E-mail</label>
-      <input id="signupEmail" type="email" placeholder="example@email.com">
+        <!-- ====================================================================== -->
+        <!-- HTML-0330: PIN 변경 폼 (중분류) -->
+        <!-- ====================================================================== -->
+        <!-- 🔍 찾기: HTML-0330 -->
+        <!-- 📝 설명: 기존 PIN → 새 PIN 변경 폼 -->
+        <!-- ====================================================================== -->
+        <div id="changeTab" class="tab-content form-hidden">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input id="changeEmail" type="email" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>Current PIN</label>
+                <div class="password-wrapper">
+                    <input id="changeOldPin" type="password" placeholder="Enter current PIN" maxlength="4">
+                    <span class="toggle-password" id="toggleChangeOldPin">👁️</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>New PIN (4 digits)</label>
+                <div class="password-wrapper">
+                    <input id="changeNewPin" type="password" placeholder="Enter new PIN" maxlength="4">
+                    <span class="toggle-password" id="toggleChangeNewPin">👁️</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm New PIN</label>
+                <div class="password-wrapper">
+                    <input id="changeNewPinConfirm" type="password" placeholder="Confirm new PIN" maxlength="4">
+                    <span class="toggle-password" id="toggleChangeNewPinConfirm">👁️</span>
+                </div>
+            </div>
+            <button class="btn-primary" id="testChangePinBtn">Change PIN</button>
+            <div id="changePinResult" class="result-box">Waiting for PIN change.</div>
+            <div class="toggle-text">
+                <button class="link-btn" id="gotoLoginFromChange">Back to Sign In</button>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-      <label>Full Name</label>
-      <input id="signupName" type="text" placeholder="Your full name">
-    </div>
-    <div class="form-group">
-      <label>Phone Number (10-11 digits)</label>
-      <input id="signupPhone" type="tel" placeholder="01012345678">
-    </div>
-    <div class="form-group">
-      <label>Password (min 4 characters)</label>
-      <div class="password-wrapper">
-        <input id="signupPassword" type="password" placeholder="Create a password">
-        <span class="toggle-password" id="toggleSignupPassword">👁️</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Confirm Password</label>
-      <div class="password-wrapper">
-        <input id="signupPasswordConfirm" type="password" placeholder="Confirm your password">
-        <span class="toggle-password" id="toggleSignupPasswordConfirm">👁️</span>
-      </div>
-    </div>
-    <button class="btn-primary" id="testSignupBtn">Sign Up</button>
-    <div id="signupResult" class="result-box">Waiting for sign up.</div>
-    <div class="toggle-text">
-      Already have an account? <button class="link-btn" id="gotoLoginFromSignup">Login</button>
-    </div>
-  </div>
 
-  <!-- ===== 블록 0330: 상태 확인 (숨김) ===== -->
-  <div style="display:none;">
-    <button id="testStatusBtn">Check Status</button>
-    <div id="statusResult" class="result-box">Click Check Status.</div>
-  </div>
+    <!-- ====================================================================== -->
+    <!-- HTML-0400: UI 제어 JavaScript (대분류) -->
+    <!-- ====================================================================== -->
+    <!-- 🔍 찾기: HTML-0400 -->
+    <!-- 📝 설명: 결과 표시, 비밀번호 토글, 탭 전환, 이벤트 바인딩 -->
+    <!-- ====================================================================== -->
 
-  <!-- ===== 블록 0340: 비밀번호 변경 폼 ===== -->
-  <div id="changeTab" class="tab-content form-hidden">
-    <div class="form-group">
-      <label>E-mail</label>
-      <input id="changeEmail" type="email" placeholder="example@email.com">
-    </div>
-    <div class="form-group">
-      <label>Current Password</label>
-      <div class="password-wrapper">
-        <input id="changeOldPassword" type="password" placeholder="Enter current password">
-        <span class="toggle-password" id="toggleChangeOldPassword">👁️</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>New Password (min 4 characters)</label>
-      <div class="password-wrapper">
-        <input id="changeNewPassword" type="password" placeholder="Enter new password">
-        <span class="toggle-password" id="toggleChangeNewPassword">👁️</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Confirm New Password</label>
-      <div class="password-wrapper">
-        <input id="changeNewPasswordConfirm" type="password" placeholder="Confirm new password">
-        <span class="toggle-password" id="toggleChangeNewPasswordConfirm">👁️</span>
-      </div>
-    </div>
-    <button class="btn-primary" id="testChangePasswordBtn">Change Password</button>
-    <div id="changePasswordResult" class="result-box">Waiting for password change.</div>
-    <div class="toggle-text">
-      <button class="link-btn" id="gotoLoginFromChange">Back to Login</button>
-    </div>
-  </div>
-
-</div>
-
-<!-- ===== 블록 0400-1100: JavaScript ===== -->
-<script>
-  // 블록 0400: 설정
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxadHBMhdMmUPgRvq_V-e7J9hnZFKgrkzqN2-MQ1jbqghaQXNAXIod7tH4BNm3R6o5h/exec';
-
-  // 블록 0500: 공통 함수
-  function showResult(elementId, message, isSuccess) {
-    const el = document.getElementById(elementId);
-    el.textContent = message;
-    el.className = 'result-box' + (isSuccess ? ' success' : ' error');
-  }
-
-  // 블록 1000: 비밀번호 표시 토글
-  function togglePasswordVisibility(inputId, toggleId) {
-    const input = document.getElementById(inputId);
-    const toggle = document.getElementById(toggleId);
-    if (input && toggle) {
-      toggle.addEventListener('click', function() {
-        if (input.type === 'password') {
-          input.type = 'text';
-          toggle.textContent = '🙈';
-        } else {
-          input.type = 'password';
-          toggle.textContent = '👁️';
+    <!-- ============================== -->
+    <!-- HTML-0410: 결과 표시 (showResult) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        function showResult(elementId, message, isSuccess) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = 'result-box' + (isSuccess ? ' success' : ' error');
         }
-      });
-    }
-  }
+    </script>
 
-  // 블록 1100: 탭 전환
-  function initTabs() {
-    const tabs = document.querySelectorAll('.tab-btn');
-    const contents = {
-      loginTab: document.getElementById('loginTab'),
-      signupTab: document.getElementById('signupTab'),
-      changeTab: document.getElementById('changeTab')
-    };
+    <!-- ============================== -->
+    <!-- HTML-0420: 비밀번호 토글 (togglePasswordVisibility) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        function togglePasswordVisibility(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            if (input && toggle) {
+                toggle.addEventListener('click', function() {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        toggle.textContent = '🙈';
+                    } else {
+                        input.type = 'password';
+                        toggle.textContent = '👁️';
+                    }
+                });
+            }
+        }
+    </script>
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        tabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        Object.keys(contents).forEach(key => {
-          contents[key].classList.toggle('form-hidden', key !== this.dataset.tab);
+    <!-- ============================== -->
+    <!-- HTML-0430: 탭 전환 (initTabs) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = {
+                loginTab: document.getElementById('loginTab'),
+                signupTab: document.getElementById('signupTab'),
+                changeTab: document.getElementById('changeTab')
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    Object.keys(contents).forEach(key => {
+                        contents[key].classList.toggle('form-hidden', key !== this.dataset.tab);
+                    });
+                });
+            });
+
+            const gotoLoginFromSignup = document.getElementById('gotoLoginFromSignup');
+            const gotoLoginFromChange = document.getElementById('gotoLoginFromChange');
+            if (gotoLoginFromSignup) {
+                gotoLoginFromSignup.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('[data-tab="loginTab"]').click();
+                });
+            }
+            if (gotoLoginFromChange) {
+                gotoLoginFromChange.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('[data-tab="loginTab"]').click();
+                });
+            }
+        }
+    </script>
+
+    <!-- ============================== -->
+    <!-- HTML-0440: 로그인 처리 (handleLogin) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pin = document.getElementById('loginPin').value.trim();
+            const btn = document.getElementById('testLoginBtn');
+
+            if (!email || !pin) {
+                showResult('loginResult', 'Please enter both email and PIN.', false);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Processing...';
+
+            try {
+                const data = await window.login(email, pin);
+                if (data.success) {
+                    window.saveSession(email, data.name || 'User');
+                    showResult('loginResult', '✅ Welcome, ' + (data.name || 'User') + '!', true);
+                    btn.disabled = false;
+                    btn.textContent = 'Login';
+                    // 로그인 성공 후 이동할 페이지 (필요 시 설정)
+                    // window.location.href = '/tilda.cc.html';
+                } else {
+                    showResult('loginResult', '❌ ' + (data.message || 'Login failed.'), false);
+                    btn.disabled = false;
+                    btn.textContent = 'Login';
+                }
+            } catch (err) {
+                showResult('loginResult', '❌ Server connection error.', false);
+                btn.disabled = false;
+                btn.textContent = 'Login';
+            }
+        }
+    </script>
+
+    <!-- ============================== -->
+    <!-- HTML-0450: 회원가입 처리 (handleSignup) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        async function handleSignup() {
+            const email = document.getElementById('signupEmail').value.trim();
+            const name = document.getElementById('signupName').value.trim();
+            const pin = document.getElementById('signupPin').value.trim();
+            const pinConfirm = document.getElementById('signupPinConfirm').value.trim();
+            const btn = document.getElementById('testSignupBtn');
+
+            if (!email || !name || !pin || !pinConfirm) {
+                showResult('signupResult', 'Please fill in all fields.', false);
+                return;
+            }
+
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+                showResult('signupResult', 'PIN must be exactly 4 digits.', false);
+                return;
+            }
+
+            if (pin !== pinConfirm) {
+                showResult('signupResult', 'PINs do not match.', false);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Processing...';
+
+            try {
+                const data = await window.signup(email, pin, name);
+                if (data.success) {
+                    showResult('signupResult', '✅ ' + data.message + ' (Awaiting admin approval)', true);
+                    btn.disabled = false;
+                    btn.textContent = 'Sign Up';
+                    document.getElementById('signupEmail').value = '';
+                    document.getElementById('signupName').value = '';
+                    document.getElementById('signupPin').value = '';
+                    document.getElementById('signupPinConfirm').value = '';
+                    setTimeout(() => {
+                        document.querySelector('[data-tab="loginTab"]').click();
+                    }, 2000);
+                } else {
+                    showResult('signupResult', '❌ ' + (data.message || 'Signup failed.'), false);
+                    btn.disabled = false;
+                    btn.textContent = 'Sign Up';
+                }
+            } catch (err) {
+                showResult('signupResult', '❌ Server connection error.', false);
+                btn.disabled = false;
+                btn.textContent = 'Sign Up';
+            }
+        }
+    </script>
+
+    <!-- ============================== -->
+    <!-- HTML-0460: PIN 변경 처리 (handleChangePin) - 소분류 -->
+    <!-- ============================== -->
+    <script>
+        async function handleChangePin() {
+            const email = document.getElementById('changeEmail').value.trim();
+            const oldPin = document.getElementById('changeOldPin').value.trim();
+            const newPin = document.getElementById('changeNewPin').value.trim();
+            const newPinConfirm = document.getElementById('changeNewPinConfirm').value.trim();
+            const btn = document.getElementById('testChangePinBtn');
+
+            if (!email || !oldPin || !newPin || !newPinConfirm) {
+                showResult('changePinResult', 'Please fill in all fields.', false);
+                return;
+            }
+
+            if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+                showResult('changePinResult', 'New PIN must be exactly 4 digits.', false);
+                return;
+            }
+
+            if (newPin !== newPinConfirm) {
+                showResult('changePinResult', 'New PINs do not match.', false);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Processing...';
+
+            try {
+                const data = await window.changePin(email, oldPin, newPin);
+                if (data.success) {
+                    showResult('changePinResult', '✅ ' + data.message, true);
+                    btn.disabled = false;
+                    btn.textContent = 'Change PIN';
+                    setTimeout(() => {
+                        document.querySelector('[data-tab="loginTab"]').click();
+                    }, 2000);
+                } else {
+                    showResult('changePinResult', '❌ ' + (data.message || 'PIN change failed.'), false);
+                    btn.disabled = false;
+                    btn.textContent = 'Change PIN';
+                }
+            } catch (err) {
+                showResult('changePinResult', '❌ Server connection error.', false);
+                btn.disabled = false;
+                btn.textContent = 'Change PIN';
+            }
+        }
+    </script>
+
+    <!-- ============================== -->
+    <!-- HTML-0470: 이벤트 바인딩 및 초기화 (소분류) -->
+    <!-- ============================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+
+            togglePasswordVisibility('loginPin', 'toggleLoginPin');
+            togglePasswordVisibility('signupPin', 'toggleSignupPin');
+            togglePasswordVisibility('signupPinConfirm', 'toggleSignupPinConfirm');
+            togglePasswordVisibility('changeOldPin', 'toggleChangeOldPin');
+            togglePasswordVisibility('changeNewPin', 'toggleChangeNewPin');
+            togglePasswordVisibility('changeNewPinConfirm', 'toggleChangeNewPinConfirm');
+
+            document.getElementById('testLoginBtn').addEventListener('click', handleLogin);
+            document.getElementById('loginPin').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+            document.getElementById('loginEmail').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+
+            document.getElementById('testSignupBtn').addEventListener('click', handleSignup);
+            document.getElementById('signupPinConfirm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleSignup();
+            });
+
+            document.getElementById('testChangePinBtn').addEventListener('click', handleChangePin);
+            document.getElementById('changeNewPinConfirm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleChangePin();
+            });
         });
-      });
-    });
 
-    document.getElementById('gotoLoginFromSignup').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelector('[data-tab="loginTab"]').click();
-    });
-    document.getElementById('gotoLoginFromChange').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelector('[data-tab="loginTab"]').click();
-    });
-  }
-
-  // 블록 0600: 로그인
-  document.getElementById('testLoginBtn').addEventListener('click', async function() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    if (!email || !password) {
-      showResult('loginResult', '❌ Please enter both email and password.', false);
-      return;
-    }
-    showResult('loginResult', '⏳ Logging in...', false);
-    try {
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'login', email, pin: password })
-      });
-      const data = await response.json();
-      if (data.success) {
-        showResult('loginResult', `✅ Welcome, ${data.name}!`, true);
-      } else {
-        showResult('loginResult', `❌ ${data.message}`, false);
-      }
-    } catch(err) {
-      showResult('loginResult', '❌ Server connection error: ' + err.message, false);
-    }
-  });
-
-  // 블록 0700: 회원가입
-  document.getElementById('testSignupBtn').addEventListener('click', async function() {
-    const email = document.getElementById('signupEmail').value.trim();
-    const name = document.getElementById('signupName').value.trim();
-    const phone = document.getElementById('signupPhone').value.trim();
-    const password = document.getElementById('signupPassword').value.trim();
-    const passwordConfirm = document.getElementById('signupPasswordConfirm').value.trim();
-
-    if (!email || !name || !phone || !password || !passwordConfirm) {
-      showResult('signupResult', '❌ Please fill in all fields.', false);
-      return;
-    }
-    if (password !== passwordConfirm) {
-      showResult('signupResult', '❌ Passwords do not match.', false);
-      return;
-    }
-    if (password.length < 4) {
-      showResult('signupResult', '❌ Password must be at least 4 characters.', false);
-      return;
-    }
-    if (!/^[0-9]{10,11}$/.test(phone)) {
-      showResult('signupResult', '❌ Phone number must be 10-11 digits.', false);
-      return;
-    }
-
-    showResult('signupResult', '⏳ Processing sign up...', false);
-    try {
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'signup', email, pin: password, name, pn: phone })
-      });
-      const data = await response.json();
-      showResult('signupResult', data.success ? '✅ ' + data.message : '❌ ' + data.message, data.success);
-    } catch(err) {
-      showResult('signupResult', '❌ Server connection error: ' + err.message, false);
-    }
-  });
-
-  // 블록 0800: 상태확인 (숨김)
-  document.getElementById('testStatusBtn').addEventListener('click', async function() {
-    showResult('statusResult', '⏳ Checking...', false);
-    try {
-      const response = await fetch(GAS_URL);
-      const text = await response.text();
-      showResult('statusResult', '✅ GAS Response:\n' + text, true);
-    } catch(err) {
-      showResult('statusResult', '❌ Error: ' + err.message, false);
-    }
-  });
-
-  // 블록 0900: 비밀번호 변경
-  document.getElementById('testChangePasswordBtn').addEventListener('click', async function() {
-    const email = document.getElementById('changeEmail').value.trim();
-    const oldPassword = document.getElementById('changeOldPassword').value.trim();
-    const newPassword = document.getElementById('changeNewPassword').value.trim();
-    const newPasswordConfirm = document.getElementById('changeNewPasswordConfirm').value.trim();
-
-    if (!email || !oldPassword || !newPassword || !newPasswordConfirm) {
-      showResult('changePasswordResult', '❌ Please fill in all fields.', false);
-      return;
-    }
-    if (newPassword !== newPasswordConfirm) {
-      showResult('changePasswordResult', '❌ New passwords do not match.', false);
-      return;
-    }
-    if (newPassword.length < 4) {
-      showResult('changePasswordResult', '❌ New password must be at least 4 characters.', false);
-      return;
-    }
-
-    showResult('changePasswordResult', '⏳ Processing password change...', false);
-    try {
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'changePassword', email, oldPassword, newPassword })
-      });
-      const data = await response.json();
-      showResult('changePasswordResult', data.success ? '✅ ' + data.message : '❌ ' + data.message, data.success);
-    } catch(err) {
-      showResult('changePasswordResult', '❌ Server connection error: ' + err.message, false);
-    }
-  });
-
-  // 블록 1100: 초기화
-  window.onload = function() {
-    initTabs();
-    togglePasswordVisibility('loginPassword', 'toggleLoginPassword');
-    togglePasswordVisibility('signupPassword', 'toggleSignupPassword');
-    togglePasswordVisibility('signupPasswordConfirm', 'toggleSignupPasswordConfirm');
-    togglePasswordVisibility('changeOldPassword', 'toggleChangeOldPassword');
-    togglePasswordVisibility('changeNewPassword', 'toggleChangeNewPassword');
-    togglePasswordVisibility('changeNewPasswordConfirm', 'toggleChangeNewPasswordConfirm');
-  };
-</script>
-<!-- ===== 블록 0400-1100: JavaScript 끝 ===== -->
-
+        console.log('✅ HTML-0400: UI controls loaded.');
+    </script>
 </body>
 </html>
-
-
